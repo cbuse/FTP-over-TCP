@@ -1,0 +1,68 @@
+Buse Elena-Cristina
+321CA
+
+	Am implementat toate comenzile din tema, cu exceptia comenzii "getfile".
+
+	Cand un client paraseste sistemul, se sterge fisierul sau de log. O varianta ar fi sa se 
+vizualizeze fisierul de log inainte ca clientul sa primeasca comanda quit. Alta varianta(pentru a
+vizualiza continutul fisierului de log si dupa ce clientul a parasit sistemul):
+se poate comenta linia care sterge fisierul de log(aceasta linie
+se afla in client.cpp la primirea comenzii quit - case 8). Am mentionat
+si in client.cpp exact linia care trebuie comentata.
+
+
+	Avand in vedere ca nu am implementat si getfile, se transmit mesaje doar intre
+clienti si server.
+
+Client
+
+	Initial, clientul ii trimite server-ului numele si portul pe care asculta
+eventuale conexiuni. 
+
+	Clientul primeste comenzi de la tastatura pe care i le trimite serverului. 
+Fiecare comanda este trimisa separat, pentru a se putea anunta cazul in care o 
+comanda mai are nevoie de parametri, are prea multi parametri sau nu exista.
+
+	Comenzile se identifica prin codurile 1,2,3,4,5,6,8, conform cu numerotarea
+din enunt.
+
+	Clientul poate primi doar comenzi de la tastatura sau mesaje de la server care constituie
+raspunsul comenzilor pe care i le-a adresat(listclients, infoclient, getshare, infofile,
+unsharefile). De asemenea, poate primi de la server si mesajele accept sau reject,
+care semnifica faptul ca un client a fost sau nu acceptat de server(daca serverul nu
+gaseste in baza sa de date un client cu acelasi nume il accepta, altfel il respinge).
+
+Server
+
+	Am preluat ca schelet de cod selectserver din laboratorul TCP_Multiplex(laboratorul 8).
+	
+	Serverul retine in baza sa de date(un vector) informatii despre fiecare client(numele,
+identificatorul primit la conectarea cu serverul, adresa IP, momentul in care s-a conectat
+la server, fiserele partajate, precum si dimensiunea lor).
+
+	Serverul poate primi de la un client date de identificare sau comenzi al caror rezultat
+este transmis clientului care a cerut informatiile. De asemenea, serverul poate primi de
+la tastatura propriile comenzi: quit si status.
+
+	In cazul in care se conecteaza un client nou, se retin timpul la care s-a conectat, 
+adresa IP si identificatorul socket-ului cu care s-a conectat.
+
+ --Daca se primesc date de identificare de la un client:
+Daca numele sau nu se afla in baza de date a clientului, il adaug.
+
+ --Daca se primesc comenzi, se trimit clientului informatiile pe care le-a cerut.
+Identificarea clientului care a cerut informatii se face prin client_sockd, retinut de catre
+server in baza sa de date.
+
+Header
+
+	Contine cateva functii ajutatoare.
+	-get_command: returneaza un numar de identificare in functie de numele comenzii,
+precum si parametrii comenzii
+	-get_file_unit: identifica unitatea de masura a dimensiunii fisierului
+	-file_size: returneaza dimensiunea fisierului in concordanta cu unitatea de masura
+	-file_unit: returneaza unitatea de masura a dimensiunii fisierului B,KB,MB sau GB
+	
+Observatii: Sunt foarte multe detalii de implementare(comentarii) si in cod.	
+
+
